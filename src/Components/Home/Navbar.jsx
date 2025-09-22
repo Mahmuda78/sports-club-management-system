@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, use } from "react";
 import { NavLink, Link } from "react-router";
 
 import logo from "../../assets/logo.png";
+import { AuthContext } from "../../Provider/AuthContext/AuthContext";
 
-const Header = () => {
-  
+const Navbar = () => {
+  const { user, logOut } = use(AuthContext);
   const [open, setOpen] = useState(false);
 
   const handleLogOut = () => {
-    // logOut()
-    //   .then(() => console.log("User logged out"))
-    //   .catch((err) => console.error(err));
-    console.log("logout");
-    
+    logOut()
+      .then(() => console.log("User logged out"))
+      .catch((err) => console.error(err));
   };
-const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
-}
+
   // Navbar Links
   const navLinks = (
     <>
@@ -23,7 +21,9 @@ const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
         <NavLink
           to="/"
           className={({ isActive }) =>
-            isActive ? "font-bold border-b-2 border-purple-800": "hover:border-b-2 border-purple-800 hover:font-bold"
+            isActive
+              ? "font-bold border-b-2 border-purple-800"
+              : "hover:border-b-2 border-purple-800 hover:font-bold"
           }
         >
           Home
@@ -33,7 +33,9 @@ const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
         <NavLink
           to="/courts"
           className={({ isActive }) =>
-            isActive ? "border-b-2 border-purple-800 font-bold": "hover:border-b-2 border-purple-800 hover:font-bold"
+            isActive
+              ? "border-b-2 border-purple-800 font-bold"
+              : "hover:border-b-2 border-purple-800 hover:font-bold"
           }
         >
           Courts
@@ -70,7 +72,10 @@ const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
             {navLinks}
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost normal-case text-xl flex items-center gap-2">
+        <Link
+          to="/"
+          className="btn btn-ghost normal-case text-xl flex items-center gap-2"
+        >
           <img src={logo} alt="logo" className="mb-4 h-8" />
           <p className="hidden font-bold lg:block">
             <span className="">Sports</span>
@@ -88,16 +93,14 @@ const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
       <div className="navbar-end">
         {!user ? (
           <div className="flex gap-2">
-            <NavLink to="/login" className="btn">
+            <NavLink to="/login" className="btn border-2 border-purple-800">
               Login
             </NavLink>
-            <NavLink to="/register" className="btn btn-outline">
-              Register
-            </NavLink>
+            
           </div>
         ) : (
           <div className="relative">
-            <p className="text-white">{user.displayName}</p>
+            
             {/* Profile image */}
             <img
               src={user.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
@@ -108,14 +111,14 @@ const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
 
             {/* Dropdown */}
             {open && (
-              <div className="absolute right-0 mt-3  bg-[#8f33ff] rounded-lg shadow-lg border-2 border-purple-400 z-50">
-                <div className="px-4 py-2   font-medium">
-                 <p> {user.displayName}</p>
-                  <p> { user.email}</p>
+              <div className="absolute right-0 mt-3 bg-[#8f33ff] rounded-lg shadow-lg border-2 border-purple-400 z-50">
+                <div className="px-4 py-2 font-medium">
+                  <p>{user.displayName}</p>
+                  <p>{user.email}</p>
                 </div>
                 <Link
                   to="/dashboard"
-                  className="block pl-4 py-2 hover:bg-gray-800  font-semibold"
+                  className="block pl-4 py-2 hover:bg-gray-800 font-semibold"
                   onClick={() => setOpen(false)}
                 >
                   Dashboard
@@ -125,7 +128,7 @@ const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
                     handleLogOut();
                     setOpen(false);
                   }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-800  font-semibold"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-800 font-semibold"
                 >
                   Logout
                 </button>
@@ -138,4 +141,4 @@ const user = { name: "mahmuda akter", email:"mahmudaakter70000@gmail.com"
   );
 };
 
-export default Header;
+export default Navbar;
