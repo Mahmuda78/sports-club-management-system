@@ -1,11 +1,12 @@
-import React, { useState, use } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, Link } from "react-router";
-
 import logo from "../../assets/logo.png";
 import { AuthContext } from "../../Provider/AuthContext/AuthContext";
+import { RxDashboard } from "react-icons/rx";
+import { IoIosLogOut } from "react-icons/io";
 
 const Navbar = () => {
-  const { user, logOut } = use(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
 
   const handleLogOut = () => {
@@ -14,7 +15,6 @@ const Navbar = () => {
       .catch((err) => console.error(err));
   };
 
-  // Navbar Links
   const navLinks = (
     <>
       <li>
@@ -23,7 +23,7 @@ const Navbar = () => {
           className={({ isActive }) =>
             isActive
               ? "font-bold border-b-2 border-purple-800"
-              : "hover:border-b-2 border-purple-800 hover:font-bold"
+              : "hover:border-b-2 border-purple-800 hover:font-bold transition-all duration-300"
           }
         >
           Home
@@ -34,8 +34,8 @@ const Navbar = () => {
           to="/courts"
           className={({ isActive }) =>
             isActive
-              ? "border-b-2 border-purple-800 font-bold"
-              : "hover:border-b-2 border-purple-800 hover:font-bold"
+              ? "font-bold border-b-2 border-purple-800"
+              : "hover:border-b-2 border-purple-800 hover:font-bold transition-all duration-300"
           }
         >
           Courts
@@ -45,9 +45,10 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-gradient-to-r from-black via-gray-900 to-black text-white shadow-sm px-4">
-      {/* Navbar Start (Dropdown for small screen) */}
+    <div className="navbar bg-gradient-to-r from-black via-gray-900 to-black text-white shadow-sm px-4 py-2 fixed w-full z-50">
+      {/* Navbar Start */}
       <div className="navbar-start">
+        {/* Mobile Dropdown */}
         <div className="dropdown lg:hidden">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
@@ -61,76 +62,81 @@ const Navbar = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth="2"
-                d="M4 6h16M4 12h16M4 18h7"
+                d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-10 p-2 shadow bg-base-100 text-black rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-3 z-10 p-2 shadow-lg bg-base-100 text-black rounded-lg w-52"
           >
             {navLinks}
           </ul>
         </div>
+
+        {/* Logo */}
         <Link
           to="/"
           className="btn btn-ghost normal-case text-xl flex items-center gap-2"
         >
-          <img src={logo} alt="logo" className="mb-4 h-8" />
-          <p className="hidden font-bold lg:block">
-            <span className="">Sports</span>
-            <span className="">Club</span>
+          <img src={logo} alt="logo" className="h-8 mb-4" />
+          <p className="hidden lg:block font-bold">
+            Sports <span className="text-purple-800">Club</span>
           </p>
         </Link>
       </div>
 
-      {/* Navbar Middle (for large screen) */}
+      {/* Navbar Center (desktop links) */}
       <div className="hidden lg:flex navbar-center">
-        <ul className="menu menu-horizontal px-1">{navLinks}</ul>
+        <ul className="menu menu-horizontal px-1 gap-2">{navLinks}</ul>
       </div>
 
       {/* Navbar End */}
-      <div className="navbar-end">
+      <div className="navbar-end relative">
         {!user ? (
-          <div className="flex gap-2">
-            <NavLink to="/login" className="btn border-2 border-purple-800">
-              Login
-            </NavLink>
-            
-          </div>
+          <NavLink
+            to="/login"
+            className="btn border-2 border-purple-800 bg-gradient-to-r from-purple-500 to-purple-800 text-white font-semibold hover:scale-105 transform transition-all duration-300"
+          >
+            Login
+          </NavLink>
         ) : (
           <div className="relative">
-            
-            {/* Profile image */}
-            <img
-              src={user.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
-              alt="User Avatar"
-              className="w-10 h-10 rounded-full cursor-pointer border-2 border-purple-800"
+            {/* Profile */}
+            <div
+              className="flex items-center gap-2 cursor-pointer"
               onClick={() => setOpen(!open)}
-            />
+            >
+              <p className="hidden md:block font-medium">{user.displayName}</p>
+              <img
+                src={user.photoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
+                alt="User Avatar"
+                className="w-10 h-10 rounded-full border-2 border-purple-800 hover:scale-105 transform transition-all duration-300"
+              />
+            </div>
 
-            {/* Dropdown */}
+            {/* Profile Dropdown */}
             {open && (
-              <div className="absolute right-0 mt-3 bg-[#8f33ff] rounded-lg shadow-lg border-2 border-purple-400 z-50">
-                <div className="px-4 py-2 font-medium">
-                  <p>{user.displayName}</p>
-                  <p>{user.email}</p>
+              <div className="absolute right-0 mt-3 w-56 bg-gradient-to-b from-purple-500 to-purple-800 text-white rounded-xl shadow-2xl border-2 border-purple-400 z-50 overflow-hidden">
+                <div className="px-4 py-3 border-b border-purple-400">
+                  <p className="font-semibold">{user.displayName}</p>
+                  <p className="text-sm opacity-80">{user.email}</p>
                 </div>
                 <Link
                   to="/dashboard"
-                  className="block pl-4 py-2 hover:bg-gray-800 font-semibold"
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-purple-700 font-medium transition-colors"
                   onClick={() => setOpen(false)}
                 >
-                  Dashboard
+                  <RxDashboard size={22} /> Dashboard
                 </Link>
                 <button
                   onClick={() => {
                     handleLogOut();
                     setOpen(false);
                   }}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-800 font-semibold"
+                  className="w-full flex items-center gap-2 px-4 py-2 hover:bg-purple-700 font-medium transition-colors"
                 >
-                  Logout
+                  <IoIosLogOut size={22} /> Logout
                 </button>
               </div>
             )}

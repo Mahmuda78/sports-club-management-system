@@ -4,13 +4,14 @@ import { Outlet } from 'react-router';
 
 
 import Footer from '../Components/Footer';
-import Home from '../Components/Home/Home';
+
+import Navbar from '../Components/Home/Navbar';
 
 
 const MainLayout = () => {
     return (
         <div>
-            <Home></Home>
+            <Navbar></Navbar>
             <Outlet></Outlet>
             <Footer></Footer>
         </div>

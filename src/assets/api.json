@@ -1,0 +1,95 @@
+[
+  {
+    "type": "Tennis",
+    "image": "https://i.ibb.co.com/7dKBtNnH/tenis.jpg",
+    "price": 1200,
+    "slots": ["08:00 AM - 09:00 AM", "09:00 AM - 10:00 AM", "10:00 AM - 11:00 AM"]
+  },
+
+ {
+    "type": "Badminton",
+    "image": "https://i.ibb.co.com/PGRQghc2/badminton.webp",
+    "price": 1700,
+    "slots": ["03:00 PM - 04:00 PM", "04:30 PM - 05:30 PM", "06:00 PM - 07:00 PM"]
+  },
+   {
+    "type": "Squash",
+    "image": "https://i.ibb.co.com/6RbhVwQB/squas.jpg",
+    "price": 2000,
+    "slots": ["05:00 PM - 06:00 PM", "06:30 PM - 07:30 PM", "08:00 PM - 09:00 PM"]
+  }
+
+  {
+    "type": "Tennis",
+    "image": "https://i.ibb.co.com/7t0rL9kR/tenish.jpg",
+    "price": 1800,
+    "slots": ["06:00 PM - 07:00 PM", "07:00 PM - 08:00 PM", "08:00 PM - 09:00 PM"]
+  },
+
+  {
+    "type": "Badminton",
+    "image": "https://i.ibb.co.com/DgQ4hR6v/badmintion-sevens.jpg",
+    "price": 1300,
+    "slots": ["07:00 AM - 08:00 AM", "09:00 AM - 10:00 AM", "02:00 PM - 03:00 PM"]
+  },
+  {
+    "type": "Squash",
+    "image": "https://i.ibb.co.com/C54fm4dg/squash.jpg",
+    "price": 1600,
+    "slots": ["10:00 AM - 11:00 AM", "12:00 PM - 01:00 PM", "03:00 PM - 04:00 PM"]
+  },
+ 
+  {
+    "type": "Badminton",
+    "image": "https://i.ibb.co.com/rGxryhXj/badminton-co.png",
+    "price": 1900,
+    "slots": ["08:00 PM - 09:00 PM", "09:30 PM - 10:30 PM", "11:00 PM - 12:00 AM"]
+  },
+
+
+ ,
+{
+    "type": "Tennis",
+    "image": "https://i.ibb.co.com/R4zLrmP8/tennis2.jpg",
+    "price": 1500,
+    "slots": ["11:00 AM - 12:00 PM", "01:00 PM - 02:00 PM", "04:00 PM - 05:00 PM"]
+  },
+  {
+    "type": "Squash",
+    "image": "https://i.ibb.co.com/fbJfQmf/squash1.webp",
+    "price": 2200,
+    "slots": ["09:00 PM - 10:00 PM", "10:30 PM - 11:30 PM", "11:45 PM - 12:45 AM"]
+  },
+
+  {
+    "type": "Football",
+    "image": "https://i.ibb.co.com/QFnDKCzB/football.jpg",
+    "price": 2500,
+    "slots": ["09:00 AM - 11:00 AM", "11:00 AM - 01:00 PM", "03:00 PM - 05:00 PM"]
+  },
+  {
+    "type": "Basketball",
+    "image": "https://i.ibb.co.com/kgV6n4VF/basketball.jpg",
+    "price": 2100,
+    "slots": ["10:00 AM - 11:30 AM", "12:00 PM - 01:30 PM", "02:00 PM - 03:30 PM"]
+  },
+  {
+    "type": "Cricket",
+    "image": "https://i.ibb.co.com/S8YtmFt/cricket.jpg",
+    "price": 2800,
+    "slots": ["08:00 AM - 12:00 PM", "01:00 PM - 05:00 PM", "06:00 PM - 10:00 PM"]
+  },
+ 
+  {
+    "type": "Gymnasium",
+    "image": "https://i.ibb.co.com/mjwxx5d/gymnasium.jpg",
+    "price": 2600,
+    "slots": ["06:00 AM - 09:00 AM", "10:00 AM - 01:00 PM", "05:00 PM - 08:00 PM"]
+  },
+  {
+    "type": "Boxing Ring",
+    "image": "https://i.ibb.co.com/7tj5D31H/boxing.webp",
+    "price": 2300,
+    "slots": ["08:00 AM - 09:30 AM", "11:00 AM - 12:30 PM", "07:00 PM - 08:30 PM"]
+  }
+]
