@@ -12,14 +12,16 @@ const useAxiosSecure = () => {
 
   // Request interceptor: attach JWT
   axiosSecure.interceptors.request.use(
-    (config) => {
-      if (user?.accessToken) {
-        config.headers.Authorization = `Bearer ${user.accessToken}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
+  (config) => {
+    if (user?.accessToken) {
+      console.log("Attaching token:", user.accessToken); // 🔥 Add this line
+      config.headers.Authorization = `Bearer ${user.accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 
   // Response interceptor: handle 401/403
   axiosSecure.interceptors.response.use(

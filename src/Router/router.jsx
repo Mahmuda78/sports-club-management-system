@@ -18,6 +18,7 @@ import ManageMembers from "../Layout/DashBoardLayout/Admin/ManageMember";
 import Payment from "../Pages/Payment/Payment";
 import Coupons from "../Pages/ManageCoupons/Coupons";
 import PaymentHistory from "../Pages/PaymentHistory/PaymentHistory";
+import ManageBookingsAdmin from "../Layout/DashBoardLayout/Admin/ManageBokings Admin";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
     path: 'approved',
     Component: ApprovedBookings
   },
+  {
+  path:'manage',
+  element:<ManageBookingsAdmin></ManageBookingsAdmin>
+ }
  
 ]
  },
@@ -90,5 +95,6 @@ export const router = createBrowserRouter([
   {
     path:'coupons',
     Component: Coupons
-  }
+  },
+ 
 ]);
