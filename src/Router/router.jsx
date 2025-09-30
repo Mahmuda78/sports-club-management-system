@@ -21,6 +21,10 @@ import PaymentHistory from "../Pages/PaymentHistory/PaymentHistory";
 import ManageBookingsAdmin from "../Layout/DashBoardLayout/Admin/ManageBokings Admin";
 import ManageAnnouncements from "../Layout/DashBoardLayout/Admin/ManageAnnouncements";
 import AnnouncementsList from "../Layout/DashBoardLayout/AnnouncementsList";
+import MakeAdmin from "../Pages/MakeAdmin";
+import CourtManage from "../Pages/CourtManage";
+
+
 
 export const router = createBrowserRouter([
   {
@@ -90,14 +94,23 @@ element:<AnnouncementsList></AnnouncementsList>
  {
   path: 'manageAnnouncements',
   element: <ManageAnnouncements></ManageAnnouncements>
- }
- 
-]
  },
-  {
+ {
+  path:'makeAdmin',
+  element: <MakeAdmin></MakeAdmin>
+ },
+ {
+  path:'courtmanage',
+  element:<CourtManage></CourtManage>
+ },
+ {
     path: 'payment/:bookingId',
     Component: Payment
   },
+ 
+]
+ },
+  
   {
     path: 'paymentHistory',
     Component: PaymentHistory

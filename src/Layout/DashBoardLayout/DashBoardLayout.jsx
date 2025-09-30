@@ -21,6 +21,8 @@ const DashboardLayout = () => {
     { to: "/dashboard/Approved", label: "Approved Bookings", icon: <ImProfile size={20} /> },
     { to: "manage", label: "Admin Booking", icon: <ImProfile size={20} /> },
      { to: "manageAnnouncements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
+     { to: "makeAdmin", label: "Make Admin", icon: <MdAnnouncement size={20} /> },
+     { to: "courtManage", label: "Court Manage", icon: <MdAnnouncement size={20} /> },
 
   ];
 
