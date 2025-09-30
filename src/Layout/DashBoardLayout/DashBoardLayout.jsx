@@ -15,7 +15,7 @@ const DashboardLayout = () => {
     { to: "bookings", label: "Pending Bookings", icon: <TbBrandBooking size={22} /> },
     { to: "announcements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
     { to: "payment", label: "payment", icon: <MdPayment size={20} /> },
-    { to: "/dashboard/approvedBookings", label: "ApprovedBookingsin", icon: <ImProfile size={20} /> },
+    { to: "/paymentHistory", label: "history", icon: <ImProfile size={20} /> },
     { to: "/dashboard/manageBookings", label: "Manage Bookings", icon: <ImProfile size={20} /> },
     { to: "/dashboard/manageMember", label: "Manage Member", icon: <ImProfile size={20} /> },
     { to: "/dashboard/Approved", label: "Approved Bookings", icon: <ImProfile size={20} /> },

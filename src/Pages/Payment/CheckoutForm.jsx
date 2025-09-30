@@ -11,9 +11,7 @@ const CheckoutForm = ({ bookingId }) => {
 
   const [booking, setBooking] = useState(null);
   const [coupon, setCoupon] = useState('');
-  const [discountedPrice, setDiscountedPrice] = useState(null);
-  const [couponApplied, setCouponApplied] = useState(false);
-  const [discountAmount, setDiscountAmount] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Fetch single booking
@@ -22,7 +20,7 @@ const CheckoutForm = ({ bookingId }) => {
     axiosSecure.get(`/bookings/${bookingId}`)
       .then(res => {
         setBooking(res.data);
-        setDiscountedPrice(res.data.price);
+        setFinalPrice(res.data.price); // initial
       })
       .catch(err => {
         console.error(err);
@@ -34,17 +32,16 @@ const CheckoutForm = ({ bookingId }) => {
     if (!coupon || !booking) return;
 
     try {
-      const res = await axiosSecure.post('/validate-coupon', { code: coupon });
-      if (res.data.valid) {
-        const percentage = res.data.discountAmount;
-        const discountTk = (booking.price * percentage) / 100;
+      const res = await axiosSecure.post('/create-payment-intent', {
+        bookingId: booking._id,
+        couponCode: coupon
+      });
 
-        setDiscountAmount(percentage);
-        setDiscountedPrice(booking.price - discountTk);
-        setCouponApplied(true);
-        toast.success(`Coupon applied! ${percentage}% off`);
+      if (res.data.finalPrice) {
+        setFinalPrice(res.data.finalPrice);
+        toast.success(`Coupon applied! New price: ৳${res.data.finalPrice}`);
       } else {
-        toast.error('Invalid coupon code');
+        toast.error('Invalid coupon');
       }
     } catch (err) {
       console.error(err);
@@ -59,37 +56,43 @@ const CheckoutForm = ({ bookingId }) => {
     setIsProcessing(true);
 
     const card = elements.getElement(CardElement);
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
+    const { error: pmError, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card,
     });
 
-    if (error) {
-      toast.error(error.message);
+    if (pmError) {
+      toast.error(pmError.message);
       setIsProcessing(false);
       return;
     }
 
     try {
-      const finalPrice = discountedPrice ?? booking.price;
+      // Always fetch latest clientSecret from backend to prevent tampering
+      const res = await axiosSecure.post('/create-payment-intent', {
+        bookingId: booking._id,
+        couponCode: coupon
+      });
 
-      const res = await axiosSecure.post('/create-payment-intent', { price: finalPrice });
-      const confirm = await stripe.confirmCardPayment(res.data.clientSecret, {
+      const clientSecret = res.data.clientSecret;
+      const confirm = await stripe.confirmCardPayment(clientSecret, {
         payment_method: paymentMethod.id,
       });
 
-      if (confirm.paymentIntent.status === 'succeeded') {
+      if (confirm.error) {
+        toast.error(confirm.error.message);
+      } else if (confirm.paymentIntent.status === 'succeeded') {
         const paymentInfo = {
           bookingId: booking._id,
           email: booking.userEmail,
-          price: finalPrice,
+          price: res.data.finalPrice,
           transactionId: confirm.paymentIntent.id,
           date: new Date(),
         };
 
         await axiosSecure.post('/payments', paymentInfo);
 
-        await Swal.fire({
+        Swal.fire({
           icon: 'success',
           title: 'Payment Successful!',
           text: 'Your booking is confirmed.',
@@ -122,7 +125,6 @@ const CheckoutForm = ({ bookingId }) => {
         />
         <button onClick={handleCouponApply} className="btn btn-primary">Apply</button>
       </div>
-      {couponApplied && <p className="text-green-400 mb-2">Coupon applied! You saved {discountAmount}%</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -141,8 +143,13 @@ const CheckoutForm = ({ bookingId }) => {
         </div>
 
         <div>
+          <label className="label">Date</label>
+          <input value={booking.date} readOnly className="input input-bordered w-full bg-gray-800 text-white" />
+        </div>
+
+        <div>
           <label className="label">Total Price</label>
-          <input value={`৳${discountedPrice ?? booking.price}`} readOnly className="input input-bordered w-full bg-primary text-black font-bold" />
+          <input value={`৳${finalPrice}`} readOnly className="input input-bordered w-full bg-primary text-black font-bold" />
         </div>
 
         <div>
