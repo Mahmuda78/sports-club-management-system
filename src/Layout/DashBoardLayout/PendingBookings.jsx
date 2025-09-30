@@ -4,22 +4,18 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 
-
 const PendingBookings = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
 
-  // Fetch pending bookings for the logged-in user
   const { data: bookings = [], isLoading } = useQuery({
     queryKey: ["pendingBookings", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(
-        `/bookings?userEmail=${user.email}&status=pending`
-      );
+      const res = await axiosSecure.get(`/bookings?status=pending`);
       return res.data;
     },
-    enabled: !!user?.email, // fetch only if user exists
+    enabled: !!user?.email,
   });
 
   const handleCancel = async (bookingId) => {
@@ -28,24 +24,19 @@ const PendingBookings = () => {
     try {
       await axiosSecure.delete(`/bookings/${bookingId}`);
       toast.success("Booking cancelled!");
-      queryClient.invalidateQueries(["pendingBookings", user.email]); // refresh bookings
+      queryClient.invalidateQueries(["pendingBookings", user.email]);
     } catch (error) {
       console.error(error);
       toast.error("Failed to cancel booking");
     }
   };
 
-  if (isLoading) {
-    return <p className="text-center py-10">Loading pending bookings...</p>;
-  }
+  if (isLoading) return <p className="text-center py-10">Loading pending bookings...</p>;
 
-  if (bookings.length === 0) {
+  if (bookings.length === 0)
     return (
-      <p className="text-center py-10 text-gray-600 text-lg">
-        🎉 No pending bookings.
-      </p>
+      <p className="text-center py-10 text-gray-600 text-lg">🎉 No pending bookings.</p>
     );
-  }
 
   return (
     <div className="p-6">
@@ -89,7 +80,7 @@ const PendingBookings = () => {
                 onClick={() => handleCancel(booking._id)}
                 className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-500 to-pink-600 text-white font-medium shadow-md hover:from-red-600 hover:to-pink-700 transform hover:scale-[1.02] transition-all duration-300"
               >
-                Cancel 
+                Cancel
               </button>
             </div>
           </div>

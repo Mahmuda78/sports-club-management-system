@@ -1,6 +1,6 @@
 import { NavLink, Outlet, Link } from "react-router";
 import { TbBrandBooking } from "react-icons/tb";
-import { MdAnnouncement } from "react-icons/md";
+import { MdAnnouncement, MdPayment } from "react-icons/md";
 import { ImProfile } from "react-icons/im";
 import { RxDashboard } from "react-icons/rx";
 import { useState } from "react";
@@ -14,6 +14,12 @@ const DashboardLayout = () => {
     { to: "myProfile", label: "My Profile", icon: <ImProfile size={20} /> },
     { to: "bookings", label: "Pending Bookings", icon: <TbBrandBooking size={22} /> },
     { to: "announcements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
+    { to: "payment", label: "payment", icon: <MdPayment size={20} /> },
+    { to: "/dashboard/approvedBookings", label: "ApprovedBookingsin", icon: <ImProfile size={20} /> },
+    { to: "/dashboard/manageBookings", label: "Manage Bookings", icon: <ImProfile size={20} /> },
+    { to: "/dashboard/manageMember", label: "Manage Member", icon: <ImProfile size={20} /> },
+    { to: "/dashboard/Approved", label: "Approved Bookings", icon: <ImProfile size={20} /> },
+
   ];
 
   return (

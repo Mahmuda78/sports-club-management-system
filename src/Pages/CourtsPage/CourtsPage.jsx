@@ -7,16 +7,21 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
-
 Modal.setAppElement("#root");
 
-const CourtsList = () => {
+const CourtsPage = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const [selectedCourt, setSelectedCourt] = useState(null);
+  const [selectedSlots, setSelectedSlots] = useState([]);
+  const [selectedDate, setSelectedDate] = useState("");
+  const [previewSlots, setPreviewSlots] = useState({});
+  const [blockedSlots, setBlockedSlots] = useState({}); // already booked slots
+
   // Fetch courts
-  const { data: courts = [], isLoading } = useQuery({
+  const { data: courts = [], isLoading: courtsLoading } = useQuery({
     queryKey: ["courts"],
     queryFn: async () => {
       const res = await axiosSecure.get("/courts");
@@ -24,12 +29,26 @@ const CourtsList = () => {
     },
   });
 
-  const [selectedCourt, setSelectedCourt] = useState(null);
-  const [selectedSlots, setSelectedSlots] = useState([]);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [previewSlots, setPreviewSlots] = useState({});
+  // Fetch all bookings to block already booked slots
+  useQuery({
+    queryKey: ["allBookings"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/bookings");
+      return res.data;
+    },
+    enabled: !!user?.accessToken, // only if user is logged in
+    onSuccess: (data) => {
+      const blocked = {};
+      data.forEach((b) => {
+        if (!blocked[b.courtId]) blocked[b.courtId] = {};
+        if (!blocked[b.courtId][b.date]) blocked[b.courtId][b.date] = [];
+        blocked[b.courtId][b.date].push(...b.slots);
+      });
+      setBlockedSlots(blocked);
+    },
+  });
 
-  // Card-level slot selection
+  // Handle slot selection on cards
   const handleSlotChangeCard = (courtId, selected) => {
     setPreviewSlots((prev) => ({
       ...prev,
@@ -37,52 +56,59 @@ const CourtsList = () => {
     }));
   };
 
-  // Book Now click
+  // "Book Now" button
   const handleBookNow = (court) => {
     if (!user) {
       toast.error("Please login first!");
       navigate("/login");
       return;
     }
+    setSelectedCourt(court);
     setSelectedSlots(previewSlots[court._id] || []);
     setSelectedDate("");
-    setSelectedCourt(court);
   };
 
-  // Modal slot change
+  // Slot selection inside modal
   const handleSlotChangeModal = (selected) => {
     setSelectedSlots(selected.map((s) => s.value));
   };
 
-  // Handle booking submission
+  // Confirm booking
   const handleBooking = async () => {
-    if (!selectedDate || selectedSlots.length === 0) {
-      toast.error("Please select date and slot(s)");
-      return;
-    }
+    if (!selectedCourt) return toast.error("Select a court");
+    if (!selectedDate) return toast.error("Select a date");
+    if (!selectedSlots.length) return toast.error("Select slot(s)");
+    if (!user?.uid || !user?.email) return toast.error("Login first!");
 
-    const totalPrice = selectedSlots.length * selectedCourt.price;
+    const payload = {
+  userId: user.uid,
+  userEmail: user.email,
+  courtId: selectedCourt._id,
+  courtTitle: selectedCourt.title || selectedCourt.type, // depending on your court object
+  courtType: selectedCourt.type,
+  date: selectedDate,
+  slots: selectedSlots,
+  price: selectedCourt.price, // price per session
+  totalPrice: selectedSlots.length * selectedCourt.price,
+  status: "pending",
+};
+
+
+    console.log("Booking payload:", payload);
 
     try {
-      await axiosSecure.post("/bookings", {
-        userEmail: user.email,
-        courtId: selectedCourt._id,
-        slots: selectedSlots,
-        date: selectedDate,
-        totalPrice,
-        status: "pending", // initial status
-      });
+      await axiosSecure.post("/bookings", payload);
       toast.success("Booking request sent! Pending approval.");
       setSelectedCourt(null);
       setSelectedSlots([]);
       setSelectedDate("");
     } catch (error) {
-      console.error(error);
-      toast.error("Booking failed. Try again.");
+      console.error(error.response?.data || error);
+      toast.error("Booking failed. Check console for details.");
     }
   };
 
-  if (isLoading) {
+  if (courtsLoading) {
     return <p className="text-center py-10">Loading courts...</p>;
   }
 
@@ -99,12 +125,17 @@ const CourtsList = () => {
             className="w-full h-40 object-cover rounded-lg mb-4"
           />
           <h2 className="text-xl font-semibold">{court.type}</h2>
-          <p className="">Price per session: ${court.price}</p>
+          <p>Price per session: ${court.price}</p>
 
           <label className="block mb-2 mt-2">Select Slots</label>
           <Select
             isMulti
-            options={court.slots.map((slot) => ({ value: slot, label: slot }))}
+            options={court.slots.map((slot) => ({
+              value: slot,
+              label: slot,
+              isDisabled:
+                blockedSlots[court._id]?.[selectedDate]?.includes(slot),
+            }))}
             onChange={(selected) => handleSlotChangeCard(court._id, selected)}
             value={(previewSlots[court._id] || []).map((slot) => ({
               value: slot,
@@ -120,15 +151,15 @@ const CourtsList = () => {
           />
 
           <button
-  onClick={() => handleBookNow(court)}
-  className="mt-4 w-full btn border border-purple-300 btn-outline bg-gradient-to-r from-purple-800 to-indigo-500 text-white py-2.5 rounded-xl shadow-md hover:scale-[1.02] transition-all duration-300 font-medium"
->
-  Book Now 
-</button>
+            onClick={() => handleBookNow(court)}
+            className="mt-4 w-full btn border border-purple-300 btn-outline bg-gradient-to-r from-purple-800 to-indigo-500 text-white py-2.5 rounded-xl shadow-md hover:scale-[1.02] transition-all duration-300 font-medium"
+          >
+            Book Now
+          </button>
         </div>
       ))}
 
-      {/* Modal */}
+      {/* Booking Modal */}
       <Modal
         isOpen={!!selectedCourt}
         onRequestClose={() => {
@@ -145,7 +176,6 @@ const CourtsList = () => {
               Book {selectedCourt.type}
             </h2>
 
-            {/* Read-only info */}
             <p className="text-gray-700 mb-2">Court: {selectedCourt.type}</p>
             <p className="text-gray-700 mb-2">
               Price per session: ${selectedCourt.price}
@@ -165,6 +195,10 @@ const CourtsList = () => {
               options={selectedCourt.slots.map((slot) => ({
                 value: slot,
                 label: slot,
+                isDisabled:
+                  blockedSlots[selectedCourt._id]?.[selectedDate]?.includes(
+                    slot
+                  ),
               }))}
               onChange={handleSlotChangeModal}
               value={selectedSlots.map((slot) => ({ value: slot, label: slot }))}
@@ -187,11 +221,11 @@ const CourtsList = () => {
                 Cancel
               </button>
               <button
-  onClick={handleBooking}
-  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-md hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-300"
->
-  Confirm Booking 
-</button>
+                onClick={handleBooking}
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-md hover:from-indigo-700 hover:to-purple-700 transform hover:scale-[1.02] transition-all duration-300"
+              >
+                Confirm Booking
+              </button>
             </div>
           </>
         )}
@@ -200,4 +234,4 @@ const CourtsList = () => {
   );
 };
 
-export default CourtsList;
+export default CourtsPage;

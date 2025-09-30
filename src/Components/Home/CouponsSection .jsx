@@ -1,40 +1,41 @@
-import React from "react";
-import { Fade } from "react-awesome-reveal";
+import React, { useEffect, useState } from "react";
+import Marquee from "react-fast-marquee";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { FaFire } from "react-icons/fa";
 
-const coupons = [
-  { code: "PUJA", discount: "5%" },
-  { code: "SAVE10", discount: "10%" },
-  { code: "WELCOME20", discount: "20%" },
-  { code: "FESTIVE50", discount: "50%" },
-];
+const CouponsMarquee = () => {
+  const [coupons, setCoupons] = useState([]);
 
-const CouponsSection = () => {
+  useEffect(() => {
+    const fetchCoupons = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/coupons"); // backend থেকে fetch
+        setCoupons(res.data);
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to load coupons");
+      }
+    };
+    fetchCoupons();
+  }, []);
+
   return (
-    <section className="bg-gradient-to-r from-gray-800 via-gray-900 to-black py-16 px-6 md:px-12 lg:px-24">
-      <div className="container mx-auto text-center text-white">
-        <Fade direction="down" triggerOnce>
-          <h2 className="text-4xl font-extrabold mb-8 drop-shadow-lg">
-             Exclusive Discounts Just for You!
-          </h2>
-        </Fade>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {coupons.map((coupon, index) => (
-            <Fade key={index} direction="up" triggerOnce>
-              <div className="bg-white text-gray-800 p-6 rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300 cursor-pointer">
-                <p className="text-2xl font-bold text-purple-600">
-                  {coupon.discount} OFF
-                </p>
-                <p className="mt-2 text-lg">Use Code:</p>
-                <p className="mt-1 text-xl font-extrabold tracking-wider bg-purple-100 text-purple-700 px-3 py-1 rounded-md inline-block">
-                  {coupon.code}
-                </p>
-              </div>
-            </Fade>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className="bg-gradient-to-r from-black via-gray-800 to-gray-600 py-6">
+      <h1 className="mb-4 flex text-4xl text-center font-bold"> <FaFire className="text-"></FaFire> All Coupons </h1>
+      <Marquee gradient={false} speed={50} pauseOnHover={true}>
+        {coupons.map((coupon, index) => (
+          <div
+            key={index}
+            className="bg-white text-gray-800 p-4 mx-4 rounded-xl shadow-lg inline-block"
+          >
+            <p className="text-xl font-bold text-purple-600">{coupon.discountAmount}% OFF</p>
+            <p className="mt-1 text-lg font-semibold">{coupon.code}</p>
+          </div>
+        ))}
+      </Marquee>
+    </div>
   );
 };
 
-export default CouponsSection;
+export default CouponsMarquee;
