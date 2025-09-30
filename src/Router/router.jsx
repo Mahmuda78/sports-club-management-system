@@ -19,6 +19,8 @@ import Payment from "../Pages/Payment/Payment";
 import Coupons from "../Pages/ManageCoupons/Coupons";
 import PaymentHistory from "../Pages/PaymentHistory/PaymentHistory";
 import ManageBookingsAdmin from "../Layout/DashBoardLayout/Admin/ManageBokings Admin";
+import ManageAnnouncements from "../Layout/DashBoardLayout/Admin/ManageAnnouncements";
+import AnnouncementsList from "../Layout/DashBoardLayout/AnnouncementsList";
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +55,10 @@ export const router = createBrowserRouter([
         path: "myProfile",
         element: <MyProfile />  
       },
+      {
+path: "announcements",
+element:<AnnouncementsList></AnnouncementsList>
+      },
   {
     path:'bookings',
     Component:PendingBookings
@@ -80,6 +86,10 @@ export const router = createBrowserRouter([
   {
   path:'manage',
   element:<ManageBookingsAdmin></ManageBookingsAdmin>
+ },
+ {
+  path: 'manageAnnouncements',
+  element: <ManageAnnouncements></ManageAnnouncements>
  }
  
 ]
