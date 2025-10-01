@@ -9,7 +9,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 const Payment = () => {
   // Read bookingId from URL param
   const { bookingId } = useParams();
-  console.log("Booking ID from URL:", bookingId);
+  // console.log("Booking ID from URL:", bookingId);
 
   if (!bookingId)
     return <p className="text-center py-10 text-red-500">No booking selected</p>;

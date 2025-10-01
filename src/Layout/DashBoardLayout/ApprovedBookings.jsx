@@ -17,7 +17,7 @@
 //       }
 
 //       try {
-//         const res = await axios.get("http://localhost:5000/bookings?status=approved", {
+//         const res = await axios.get("https://sports-club-manegement-server.vercel.app/bookings?status=approved", {
 //           headers: { Authorization: `Bearer ${token}` }
 //         });
 //         setBookings(res.data);
@@ -42,7 +42,7 @@
 
 //     const token = localStorage.getItem("accessToken");
 //     try {
-//       const res = await axios.delete(`http://localhost:5000/bookings/${bookingId}`, {
+//       const res = await axios.delete(`https://sports-club-manegement-server.vercel.app/bookings/${bookingId}`, {
 //         headers: { Authorization: `Bearer ${token}` }
 //       });
 

@@ -10,7 +10,7 @@ const CouponsMarquee = () => {
   useEffect(() => {
     const fetchCoupons = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/coupons"); // backend থেকে fetch
+        const res = await axios.get("https://sports-club-manegement-server.vercel.app/coupons"); // backend থেকে fetch
         setCoupons(res.data);
       } catch (err) {
         console.error(err);

@@ -7,7 +7,7 @@ const useAxiosSecure = () => {
   const navigate = useNavigate();
 
   const axiosSecure = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://sports-club-manegement-server.vercel.app",
   });
 
   // Request interceptor: attach JWT

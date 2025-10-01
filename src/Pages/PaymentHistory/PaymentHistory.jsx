@@ -26,7 +26,7 @@ const PaymentHistory = () => {
         // Get Firebase ID token
         const idToken = await user.getIdToken();
 
-        const res = await axios.get(`http://localhost:5000/payments?email=${user.email}`, {
+        const res = await axios.get(`https://sports-club-manegement-server.vercel.app/payments?email=${user.email}`, {
           headers: {
             Authorization: `Bearer ${idToken}`,
           },

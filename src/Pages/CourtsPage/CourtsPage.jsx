@@ -94,7 +94,7 @@ const CourtsPage = () => {
 };
 
 
-    console.log("Booking payload:", payload);
+    // console.log("Booking payload:", payload);
 
     try {
       await axiosSecure.post("/bookings", payload);
