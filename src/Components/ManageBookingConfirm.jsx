@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import { FaSearch } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ManageBookingsConfirmedPaid = () => {
   const [bookings, setBookings] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const axiosSecure = useAxiosSecure();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/bookings/confirmed-paid?search=${search}`
+        const res = await axiosSecure.get(
+          `/api/bookings/confirmed-paid?search=${search}`
         );
         setBookings(res.data);
-        setLoading(false);
       } catch (err) {
         console.error(err);
         Swal.fire(
@@ -24,11 +26,12 @@ const ManageBookingsConfirmedPaid = () => {
           "Failed to fetch confirmed bookings with payment",
           "error"
         );
+      } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [search]);
+  }, [search, axiosSecure]);
 
   if (loading)
     return <p className="text-center py-10 text-gray-500">Loading...</p>;
@@ -53,7 +56,7 @@ const ManageBookingsConfirmedPaid = () => {
         </div>
       </div>
 
-      {/* Desktop Table */}
+      {/* Table */}
       <div className="hidden md:block overflow-x-auto bg-white shadow-2xl rounded-2xl">
         <table className="min-w-full text-sm md:text-base text-left text-gray-600">
           <thead className="bg-indigo-100 text-indigo-700 uppercase text-xs md:text-sm font-semibold">
@@ -114,8 +117,7 @@ const ManageBookingsConfirmedPaid = () => {
               <strong>Date:</strong> {new Date(b.date).toLocaleDateString()}
             </p>
             <p className="text-sm text-gray-700">
-              <strong>Price:</strong> ${b.price} | <strong>Amount Paid:</strong>{" "}
-              ${b.price ?? 0}
+              <strong>Price:</strong> ${b.price ?? 0} | <strong>Amount Paid:</strong> ${b.price ?? 0}
             </p>
             <p className="text-sm text-gray-700">
               <strong>Coupon:</strong> {b.coupon ?? "N/A"}

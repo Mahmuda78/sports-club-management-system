@@ -2,7 +2,7 @@ import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import useUserRole from "../../hooks/useUserRole";
 import Loading from "../../Pages/Loading";
-import { FaGift, FaUsers } from "react-icons/fa";
+import { FaClipboardList, FaGift, FaUsers } from "react-icons/fa";
 
 // React Router
 import { NavLink, Outlet, Link } from "react-router";
@@ -38,25 +38,32 @@ const DashboardLayout = () => {
 
   if (role === "admin") {
     menuItems = [
-       { to: "adminProfile", label: " Admin Profile", icon: <ImProfile size={20} /> },
+      { to: "adminProfile", label: " Admin Profile", icon: <ImProfile size={20} /> },
       { to: "manageBookings", label: "Manage Bookings", icon: <ImProfile size={20} /> },
       { to: "manageMember", label: "Manage Member", icon: <ImProfile size={20} /> },
       { to: "allUsers", label: "All Users", icon: <FaUsers size={20} /> },
-       { to: "courtManage", label: "Court Manage", icon: <MdAnnouncement size={20} /> },
-       { to: "bookingCorfirm", label: "Manage Confirm", icon: <MdAnnouncement size={20} /> },
+      { to: "courtManage", label: "Court Manage", icon: <MdAnnouncement size={20} /> },
+      { to: "bookingCorfirm", label: "Manage Confirm", icon: <MdAnnouncement size={20} /> },
       { to: "manageCoupons", label: "Coupons", icon: <FaGift size={20} /> },
       { to: "manageAnnouncements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
       { to: "makeAdmin", label: "Make Admin", icon: <MdAnnouncement size={20} /> },
-     
+
     ];
   }
 
   if (role === "member") {
     menuItems = [
-      { to: "myProfile", label: "My Profile", icon: <ImProfile size={20} /> },
+      { to: "memberProfile", label: "My Profile", icon: <ImProfile size={20} /> },
       { to: "paymentHistory", label: "Payment History", icon: <MdPayment size={20} /> },
-      
+
       { to: "approved", label: "Approved Bookings", icon: <ImProfile size={20} /> },
+      {
+        to: "confirmedBookings",
+        label: "Confirmed Bookings",
+        icon: <FaClipboardList size={20} />,
+        
+      },
+        { to: "announcements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
     ];
   }
 

@@ -27,6 +27,10 @@ import AdminRoute from "./AdminRoute";
 import AdminProfile from "../Components/AdminProfile";
 import AllUsers from "../Components/AllUsers";
 import ManageBookingConfirm from "../Components/ManageBookingConfirm";
+import MemberRoute from "./MemberRoute";
+import MemberProfile from "../Components/MemberProfile";
+import ConfirmedBookings from "../Components/ConfirmedBookings";
+import Forbidden from "../Components/Forbidden";
 
 
 
@@ -52,7 +56,10 @@ export const router = createBrowserRouter([
     path:"/register",
     element:<Register></Register>
   },
-
+{
+  path:'forbidden',
+  Component:Forbidden
+},
  {
   path:'/dashboard',
   element:<PrivateRoute><DashBoardLayout></DashBoardLayout></PrivateRoute>,
@@ -90,7 +97,7 @@ element:<AnnouncementsList></AnnouncementsList>
   },
   {
     path: 'approved',
-    Component: ApprovedBookings
+    element:<MemberRoute><ApprovedBookings></ApprovedBookings></MemberRoute>
   },
   {
   path:'manage',
@@ -127,13 +134,21 @@ element:<AnnouncementsList></AnnouncementsList>
   },
 {
     path: 'paymentHistory',
-    element:<PaymentHistory></PaymentHistory>
+    element:<MemberRoute><PaymentHistory></PaymentHistory></MemberRoute>
+  },
+  {
+    path:'memberProfile',
+    element:<MemberRoute><MemberProfile></MemberProfile></MemberRoute>
+  },
+  {
+    path:'confirmedBookings',
+    element:<MemberRoute><ConfirmedBookings></ConfirmedBookings></MemberRoute>
   }
  
 ]
  },
   
-  ,
+  
  
  
 ]);
