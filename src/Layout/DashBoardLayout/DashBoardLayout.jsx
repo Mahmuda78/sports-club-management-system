@@ -37,6 +37,7 @@ const DashboardLayout = () => {
 
   if (role === "admin") {
     menuItems = [
+       { to: "adminProfile", label: " Admin Profile", icon: <ImProfile size={20} /> },
       { to: "manageBookings", label: "Manage Bookings", icon: <ImProfile size={20} /> },
       { to: "manageCoupons", label: "Coupons", icon: <FaGift size={20} /> },
       { to: "manageAnnouncements", label: "Announcements", icon: <MdAnnouncement size={20} /> },

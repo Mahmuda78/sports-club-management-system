@@ -24,6 +24,7 @@ import AnnouncementsList from "../Layout/DashBoardLayout/AnnouncementsList";
 import MakeAdmin from "../Pages/MakeAdmin";
 import CourtManage from "../Pages/CourtManage";
 import AdminRoute from "./AdminRoute";
+import AdminProfile from "../Components/AdminProfile";
 
 
 
@@ -110,6 +111,10 @@ element:<AnnouncementsList></AnnouncementsList>
     path:'manageCoupons',
     element:<AdminRoute><Coupons></Coupons></AdminRoute>
   },
+  {
+    path:'adminProfile',
+    element:<AdminRoute><AdminProfile></AdminProfile></AdminRoute>
+  }
  
 ]
  },
