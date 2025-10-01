@@ -25,6 +25,7 @@ import MakeAdmin from "../Pages/MakeAdmin";
 import CourtManage from "../Pages/CourtManage";
 import AdminRoute from "./AdminRoute";
 import AdminProfile from "../Components/AdminProfile";
+import AllUsers from "../Components/AllUsers";
 
 
 
@@ -114,6 +115,10 @@ element:<AnnouncementsList></AnnouncementsList>
   {
     path:'adminProfile',
     element:<AdminRoute><AdminProfile></AdminProfile></AdminRoute>
+  },
+  {
+    path:'allUsers',
+    element:<AdminRoute><AllUsers></AllUsers></AdminRoute>
   }
  
 ]
