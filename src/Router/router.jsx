@@ -26,6 +26,7 @@ import CourtManage from "../Pages/CourtManage";
 import AdminRoute from "./AdminRoute";
 import AdminProfile from "../Components/AdminProfile";
 import AllUsers from "../Components/AllUsers";
+import ManageBookingConfirm from "../Components/ManageBookingConfirm";
 
 
 
@@ -119,15 +120,20 @@ element:<AnnouncementsList></AnnouncementsList>
   {
     path:'allUsers',
     element:<AdminRoute><AllUsers></AllUsers></AdminRoute>
+  },
+  {
+    path:'bookingCorfirm',
+    element:<AdminRoute><ManageBookingConfirm></ManageBookingConfirm></AdminRoute>
+  },
+{
+    path: 'paymentHistory',
+    element:<PaymentHistory></PaymentHistory>
   }
  
 ]
  },
   
-  {
-    path: 'paymentHistory',
-    Component: PaymentHistory
-  },
+  ,
  
  
 ]);

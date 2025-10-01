@@ -43,6 +43,7 @@ const DashboardLayout = () => {
       { to: "manageMember", label: "Manage Member", icon: <ImProfile size={20} /> },
       { to: "allUsers", label: "All Users", icon: <FaUsers size={20} /> },
        { to: "courtManage", label: "Court Manage", icon: <MdAnnouncement size={20} /> },
+       { to: "bookingCorfirm", label: "Manage Confirm", icon: <MdAnnouncement size={20} /> },
       { to: "manageCoupons", label: "Coupons", icon: <FaGift size={20} /> },
       { to: "manageAnnouncements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
       { to: "makeAdmin", label: "Make Admin", icon: <MdAnnouncement size={20} /> },
@@ -52,8 +53,9 @@ const DashboardLayout = () => {
 
   if (role === "member") {
     menuItems = [
-      { to: "paymentHistory", label: "Payment History", icon: <MdPayment size={20} /> },
       { to: "myProfile", label: "My Profile", icon: <ImProfile size={20} /> },
+      { to: "paymentHistory", label: "Payment History", icon: <MdPayment size={20} /> },
+      
       { to: "approved", label: "Approved Bookings", icon: <ImProfile size={20} /> },
     ];
   }
