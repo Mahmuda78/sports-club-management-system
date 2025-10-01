@@ -26,6 +26,7 @@ import CourtManage from "../Pages/CourtManage";
 
 
 
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -103,10 +104,7 @@ element:<AnnouncementsList></AnnouncementsList>
   path:'courtmanage',
   element:<CourtManage></CourtManage>
  },
- {
-    path: 'payment/:bookingId',
-    Component: Payment
-  },
+ { path: "payment/:bookingId", element: <Payment /> },
  
 ]
  },

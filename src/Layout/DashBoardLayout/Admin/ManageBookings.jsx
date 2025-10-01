@@ -68,7 +68,7 @@ const ManageBookings = () => {
               <span className="font-semibold">Slots:</span> {b.slots.join(", ")}
             </p>
             <p>
-              <span className="font-semibold">Price:</span> ${b.price}
+              <span className="font-semibold">Price:</span> ${b.totalPrice}
             </p>
 
             <div className="mt-4 flex gap-3">

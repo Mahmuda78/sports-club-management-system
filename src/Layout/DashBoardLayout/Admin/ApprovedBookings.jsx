@@ -1,8 +1,6 @@
 import React from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-
-
 import { useNavigate } from "react-router";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
@@ -17,7 +15,9 @@ const ApprovedBookings = () => {
   const { data: bookings = [], isLoading } = useQuery({
     queryKey: ["approvedBookings", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/bookings?status=approved&userEmail=${user.email}`);
+      const res = await axiosSecure.get(
+        `/bookings?status=approved&email=${user.email}`
+      );
       return res.data;
     },
     enabled: !!user?.email,
@@ -39,7 +39,8 @@ const ApprovedBookings = () => {
 
   // Payment redirect
   const handlePayment = (bookingId) => {
-    navigate(`/payment/${bookingId}`);
+   navigate(`/dashboard/payment/${bookingId}`);
+
   };
 
   if (isLoading)
@@ -74,11 +75,11 @@ const ApprovedBookings = () => {
                 {booking.slots.join(", ")}
               </p>
               <p>
-                <span className="font-semibold text-indigo-700">Price per session:</span> $
-                {booking.price}
+                <span className="font-semibold text-indigo-700">Price per session:</span>{" "}
+                ৳{booking.price}
               </p>
               <p>
-                <span className="font-semibold text-indigo-700">Total:</span> $
+                <span className="font-semibold text-indigo-700">Total:</span> ৳
                 {booking.totalPrice}
               </p>
             </div>

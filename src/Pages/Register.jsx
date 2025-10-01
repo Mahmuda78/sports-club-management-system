@@ -6,6 +6,7 @@ import { AuthContext } from "../Provider/AuthContext/AuthContext";
 import Logo from "../Shared/Logo";
 import { FcGoogle } from "react-icons/fc";
 import useAxios from "../hooks/useAxios";
+import { provider } from "../Provider/AuthProvider";
  
 
 const Register = () => {
@@ -108,28 +109,31 @@ const Register = () => {
   };
 
   // Google Sign-In handler
-  const handleGoogleSignIn = async () => {
-    try {
-      const result = await googleSignIn();
-      const user = result.user;
-
-      // Optional: Add Google user to backend if needed
-      const userInfo = {
-        email: user.email,
-        name: user.displayName,
-        role: "user",
-        photoURL: user.photoURL,
-        created_at: new Date().toISOString(),
-        last_log_in: new Date().toISOString(),
-      };
-      await axiosInstance.post("/users", userInfo);
-
-      toast.success(`Welcome ${user.displayName}`);
-      setTimeout(() => navigate(from), 2000);
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
+   const handleGoogleSignIn = async () => {
+      try {
+        const result = await googleSignIn(provider);
+        const user = result.user;
+  
+        // Prepare user info for backend
+        const userInfo = {
+          email: user.email,
+          name: user.displayName,
+          photoURL: user.photoURL || "",
+          role: "user",
+          createdAt: new Date().toISOString(),
+          isMember: false,
+        };
+  
+        // Add or update user in backend
+        await axiosInstance.post("/users", userInfo);
+  
+        toast.success(`Welcome ${user.displayName}`);
+        setTimeout(() => navigate(location.state?.from || "/"), 2000);
+      } catch (error) {
+        console.error("Error during Google sign-in:", error);
+        toast.error("Google login failed");
+      }
+    };
 
   return (
     <div className="flex flex-col items-center min-h-screen justify-center bg-gradient-to-br from-gray-900 to-gray-600 py-6">

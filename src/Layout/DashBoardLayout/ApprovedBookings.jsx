@@ -1,89 +1,92 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import { useEffect, useState } from "react";
 
-const ApprovedBookings = () => {
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
+// import axios from "axios";
+// import { useNavigate } from "react-router";
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
+// const ApprovedBookings = () => {
+//   const [bookings, setBookings] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const navigate = useNavigate();
 
-      try {
-        const res = await axios.get("http://localhost:5000/bookings?status=approved", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setBookings(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+//   useEffect(() => {
+//     const fetchBookings = async () => {
+//       const token = localStorage.getItem("accessToken");
+//       if (!token) {
+//         navigate("/login");
+//         return;
+//       }
 
-    fetchBookings();
-  }, [navigate]);
+//       try {
+//         const res = await axios.get("http://localhost:5000/bookings?status=approved", {
+//           headers: { Authorization: `Bearer ${token}` }
+//         });
+//         setBookings(res.data);
+//       } catch (err) {
+//         console.error(err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
 
-  const handlePayment = (bookingId) => {
-    navigate(`/payment/${bookingId}`);
-  };
+//     fetchBookings();
+//   }, [navigate]);
 
-  const handleCancel = async (bookingId) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
+//   const handlePayment = (bookingId) => {
+//     navigate(`/payment/${bookingId}`);
+//     console.log(bookingId);
+    
+//   };
 
-    const token = localStorage.getItem("accessToken");
-    try {
-      const res = await axios.delete(`http://localhost:5000/bookings/${bookingId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+//   const handleCancel = async (bookingId) => {
+//     if (!window.confirm("Are you sure you want to cancel this booking?")) return;
 
-      if (res.data.deletedCount > 0) {
-        setBookings(prev => prev.filter(b => b._id !== bookingId));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+//     const token = localStorage.getItem("accessToken");
+//     try {
+//       const res = await axios.delete(`http://localhost:5000/bookings/${bookingId}`, {
+//         headers: { Authorization: `Bearer ${token}` }
+//       });
 
-  if (loading) return <p>Loading approved bookings...</p>;
-  if (!bookings.length) return <p>No approved bookings available.</p>;
+//       if (res.data.deletedCount > 0) {
+//         setBookings(prev => prev.filter(b => b._id !== bookingId));
+//       }
+//     } catch (err) {
+//       console.error(err);
+//     }
+//   };
 
-  return (
-    <div className="approved-bookings">
-      <h2>Approved Bookings</h2>
-      <table className="bookings-table">
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Court</th>
-            <th>Slots</th>
-            <th>Price (৳)</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bookings.map(booking => (
-            <tr key={booking._id}>
-              <td>{booking.userName || booking.userEmail}</td>
-              <td>{booking.courtTitle}</td>
-              <td>{Array.isArray(booking.slots) ? booking.slots.join(", ") : booking.slots}</td>
-              <td>{booking.price}</td>
-              <td>
-                <button className="pay-btn" onClick={() => handlePayment(booking._id)}>Pay</button>
-                <button className="cancel-btn" onClick={() => handleCancel(booking._id)}>Cancel</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+//   if (loading) return <p>Loading approved bookings...</p>;
+//   if (!bookings.length) return <p>No approved bookings available.</p>;
 
-export default ApprovedBookings;
+//   return (
+//     <div className="approved-bookings">
+//       <h2>Approved Bookings</h2>
+//       <table className="bookings-table">
+//         <thead>
+//           <tr>
+//             <th>User</th>
+//             <th>Court</th>
+//             <th>Slots</th>
+//             <th>Price (৳)</th>
+//             <th>Actions</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {bookings.map(booking => (
+//             <tr key={booking._id}>
+//               <td>{booking.userName || booking.userEmail}</td>
+//               <td>{booking.courtTitle}</td>
+//               <td>{Array.isArray(booking.slots) ? booking.slots.join(", ") : booking.slots}</td>
+//               <td>{booking.price}</td>
+//               <td>
+//                 <button className="pay-btn" onClick={() => handlePayment(booking._id)}>Pay</button>
+//                 <button className="cancel-btn" onClick={() => handleCancel(booking._id)}>Cancel</button>
+//               </td>
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+// export default ApprovedBookings;

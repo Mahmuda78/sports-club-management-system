@@ -73,7 +73,8 @@ const PaymentHistory = () => {
               <td>{index + 1}</td>
               <td>{p.bookingId}</td>
               <td>{p.email}</td>
-              <td>{p.price}</td>
+              <td>{p.amount || p.price} </td>
+
               <td>{p.transactionId}</td>
               <td>{new Date(p.date).toLocaleString()}</td>
               <td

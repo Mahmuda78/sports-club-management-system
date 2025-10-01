@@ -14,7 +14,7 @@ const useAxiosSecure = () => {
   axiosSecure.interceptors.request.use(
   (config) => {
     if (user?.accessToken) {
-      console.log("Attaching token:", user.accessToken); // 🔥 Add this line
+      
       config.headers.Authorization = `Bearer ${user.accessToken}`;
     }
     return config;
