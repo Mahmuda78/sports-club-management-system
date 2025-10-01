@@ -22,7 +22,7 @@ const CouponsMarquee = () => {
 
   return (
     <div className="bg-gradient-to-r from-black via-gray-800 to-gray-600 py-6">
-      <h1 className="mb-4 flex text-4xl text-center font-bold"> <FaFire className="text-"></FaFire> All Coupons </h1>
+      <h1 className="mb-4 flex text-4xl text-center text-purple-300 font-bold"> <FaFire className="text-"></FaFire> All Coupons </h1>
       <Marquee gradient={false} speed={50} pauseOnHover={true}>
         {coupons.map((coupon, index) => (
           <div
