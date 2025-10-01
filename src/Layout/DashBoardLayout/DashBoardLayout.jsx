@@ -1,34 +1,61 @@
+import { useState } from "react";
+import useAuth from "../../hooks/useAuth";
+import useUserRole from "../../hooks/useUserRole";
+import Loading from "../../Pages/Loading";
+import { FaGift } from "react-icons/fa";
+// React Router
 import { NavLink, Outlet, Link } from "react-router";
+
+// Icons
+import { ImProfile } from "react-icons/im";
 import { TbBrandBooking } from "react-icons/tb";
 import { MdAnnouncement, MdPayment } from "react-icons/md";
-import { ImProfile } from "react-icons/im";
-import { RxDashboard } from "react-icons/rx";
-import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
+import { RxDashboard } from "react-icons/rx";
+
+// Animation
 import { motion, AnimatePresence } from "framer-motion";
 
 const DashboardLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, loading } = useAuth();
+  const { role, roleLoading } = useUserRole();
 
-  const menuItems = [
-    { to: "myProfile", label: "My Profile", icon: <ImProfile size={20} /> },
-    { to: "bookings", label: "Pending Bookings", icon: <TbBrandBooking size={22} /> },
-    { to: "announcements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
-   
-    { to: "/paymentHistory", label: "history", icon: <ImProfile size={20} /> },
-    { to: "/dashboard/manageBookings", label: "Manage Bookings", icon: <ImProfile size={20} /> },
-    { to: "/dashboard/manageMember", label: "Manage Member", icon: <ImProfile size={20} /> },
-    { to: "/dashboard/Approved", label: "Approved Bookings", icon: <ImProfile size={20} /> },
-    { to: "manage", label: "Admin Booking", icon: <ImProfile size={20} /> },
-     { to: "manageAnnouncements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
-     { to: "makeAdmin", label: "Make Admin", icon: <MdAnnouncement size={20} /> },
-     { to: "courtManage", label: "Court Manage", icon: <MdAnnouncement size={20} /> },
+  if (roleLoading) {
+    return <Loading />;
+  }
 
-  ];
+  let menuItems = [];
+
+  if (role === "user") {
+    menuItems = [
+      { to: "myProfile", label: "My Profile", icon: <ImProfile size={20} /> },
+      { to: "bookings", label: "Pending Bookings", icon: <TbBrandBooking size={22} /> },
+      { to: "announcements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
+    ];
+  }
+
+  if (role === "admin") {
+    menuItems = [
+      { to: "manageBookings", label: "Manage Bookings", icon: <ImProfile size={20} /> },
+      { to: "manageCoupons", label: "Coupons", icon: <FaGift size={20} /> },
+      { to: "manageAnnouncements", label: "Announcements", icon: <MdAnnouncement size={20} /> },
+      { to: "makeAdmin", label: "Make Admin", icon: <MdAnnouncement size={20} /> },
+      { to: "courtManage", label: "Court Manage", icon: <MdAnnouncement size={20} /> },
+    ];
+  }
+
+  if (role === "member") {
+    menuItems = [
+      { to: "paymentHistory", label: "Payment History", icon: <MdPayment size={20} /> },
+      { to: "myProfile", label: "My Profile", icon: <ImProfile size={20} /> },
+      { to: "approved", label: "Approved Bookings", icon: <ImProfile size={20} /> },
+    ];
+  }
 
   return (
     <div className="flex min-h-screen relative">
-      {/* Sidebar for lg and above */}
+      {/* Sidebar */}
       <aside className="hidden lg:flex lg:flex-col w-64 bg-gradient-to-b from-gray-900 via-purple-900 to-gray-800 text-white p-6 shadow-xl">
         <Link to={"/"}>
           <h2 className="text-2xl font-bold mb-6 flex gap-x-2 items-center">
@@ -41,10 +68,9 @@ const DashboardLayout = () => {
               key={item.to}
               to={item.to}
               className={({ isActive }) =>
-                `transition-colors duration-200 flex gap-x-2 items-center px-2 py-2 rounded-lg ${
-                  isActive
-                    ? "bg-purple-700 font-semibold"
-                    : "hover:bg-gray-800 hover:text-purple-300"
+                `transition-colors duration-200 flex gap-x-2 items-center px-2 py-2 rounded-lg ${isActive
+                  ? "bg-purple-700 font-semibold"
+                  : "hover:bg-gray-800 hover:text-purple-300"
                 }`
               }
             >
@@ -67,7 +93,7 @@ const DashboardLayout = () => {
         </Link>
       </div>
 
-      {/* Mobile Drawer / Dropdown Menu */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -84,10 +110,9 @@ const DashboardLayout = () => {
                   to={item.to}
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                      isActive
-                        ? "bg-purple-700 font-semibold"
-                        : "hover:bg-gray-800 hover:text-purple-300"
+                    `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${isActive
+                      ? "bg-purple-700 font-semibold"
+                      : "hover:bg-gray-800 hover:text-purple-300"
                     }`
                   }
                 >
@@ -99,7 +124,6 @@ const DashboardLayout = () => {
         )}
       </AnimatePresence>
 
-      {/* Overlay when drawer open */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 lg:hidden z-30"

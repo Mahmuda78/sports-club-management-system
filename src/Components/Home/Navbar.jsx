@@ -45,7 +45,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-gradient-to-r max-w-7xl mx-auto from-black via-gray-900 to-black text-white shadow-sm px-4 py-2 fixed w-full z-50">
+    <div className="navbar max-w-7xl mx-auto bg-gradient-to-r  from-black via-gray-900 to-black text-white shadow-sm px-4 py-2 fixed w-full z-50">
       {/* Navbar Start */}
       <div className="navbar-start">
         {/* Mobile Dropdown */}

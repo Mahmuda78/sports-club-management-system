@@ -23,6 +23,7 @@ import ManageAnnouncements from "../Layout/DashBoardLayout/Admin/ManageAnnouncem
 import AnnouncementsList from "../Layout/DashBoardLayout/AnnouncementsList";
 import MakeAdmin from "../Pages/MakeAdmin";
 import CourtManage from "../Pages/CourtManage";
+import AdminRoute from "./AdminRoute";
 
 
 
@@ -82,7 +83,7 @@ element:<AnnouncementsList></AnnouncementsList>
   },
   {
     path:'manageMember',
-    Component: ManageMembers
+    element:<AdminRoute><ManageMembers></ManageMembers></AdminRoute>
   },
   {
     path: 'approved',
@@ -105,6 +106,10 @@ element:<AnnouncementsList></AnnouncementsList>
   element:<CourtManage></CourtManage>
  },
  { path: "payment/:bookingId", element: <Payment /> },
+  {
+    path:'manageCoupons',
+    element:<AdminRoute><Coupons></Coupons></AdminRoute>
+  },
  
 ]
  },
@@ -113,9 +118,6 @@ element:<AnnouncementsList></AnnouncementsList>
     path: 'paymentHistory',
     Component: PaymentHistory
   },
-  {
-    path:'coupons',
-    Component: Coupons
-  },
+ 
  
 ]);
